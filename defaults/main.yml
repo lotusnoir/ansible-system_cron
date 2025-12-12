@@ -1,11 +1,9 @@
 ---
-cron_file: null
-crons: []
+crontab_config: |
+  SHELL=/bin/sh
+  17 *	* * *	root	cd / && run-parts --report /etc/cron.hourly
+  25 6	* * *	root	test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.daily; }
+  47 6	* * 7	root	test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.weekly; }
+  52 6	1 * *	root	test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.monthly; }
 
-default_crontab_time:
-  hourly: "17 *    * * *"
-  daily: "25 6    * * *"
-  weekly: "47 6    * * 7"
-  monthly: "52 6    1 * *"
-
-cron_crontab_time: "{{ default_crontab_time | combine(crontab_time | default({})) }}"
+cron_jobs: []
